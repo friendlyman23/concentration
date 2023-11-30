@@ -1,0 +1,1 @@
+transposedDeck = [group.insert(CC.CARD_TOPS, 0) for group in transposedDeck]

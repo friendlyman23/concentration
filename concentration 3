@@ -1,0 +1,111 @@
+import concentration_constants as CC
+import random
+import numpy as np
+
+def getSecretBoard():
+
+    # (making empty deck populated with zeroes)
+    deck = [0] * len((CC.CARD_ART))
+    for i in range(len(deck)):
+        deck[i] = [0] * 3
+
+    # add card artwork to deck with card edges
+    for i in range(len(CC.CARD_ART)):
+        for j in range(len(CC.CARD_ART[i])):
+            deck[i][j] = '|' + CC.CARD_ART[i][j] + '|'
+
+    # duplicate each card so each has a match
+    for i in range(len(deck)):
+        deck.append(deck[i])
+
+    # shuffle the deck
+    random.shuffle(deck)
+
+    # group deck into four-card groups
+    group = 0
+    groupedDeck = []
+    while group < len(deck):
+        groupedDeck.append(deck[group:group + 4])
+        group += 4
+
+    transposedDeck = []
+
+    transposedDeck = [
+        [
+            [row[i] for row in group]
+            for i in range(len(group[0]))
+        ]
+        for group in groupedDeck
+    ]
+
+    for group in transposedDeck:
+        group.insert(0, CC.CARD_TOPS)
+        group.append(CC.CARD_BOTTOMS)
+
+    return transposedDeck
+
+def getPublicBoard():
+
+    counter = [x for x in range(1, 13)]
+    iterCounter = iter(counter)
+
+    cardTops = [
+        ([
+            ' _____ ' for _ in range(CC.CARDS_PER_ROW)
+        ],
+        [
+            '|     |' for _ in range(CC.CARDS_PER_ROW)
+        ],
+        [
+            '|CARD |' for _ in range(CC.CARDS_PER_ROW)
+        ])
+        ]
+    
+    cardNos = []
+    for _ in range(CC.CARDS_PER_ROW):
+        num = next(iterCounter)
+        if num < 10:
+            extraSpace = '  '
+        else:
+            extraSpace = ' '
+        cardNos.append(['|' + extraSpace + str(num) + '|'])
+    
+
+
+            
+        [
+            f'|   {next(cardNo)} |' if next(cardNo) < 10 else f'|  {next(cardNo)} |' for _ in range(CC.CARDS_PER_ROW)
+        ],
+        [
+            '|_____|' for _ in range(CC.CARDS_PER_ROW)
+        ])
+        for i in range(1, CC.CARD_ROWS + 1)
+    ]
+
+    return publicBoard
+
+
+secretBoard = getSecretBoard()
+publicBoard = getPublicBoard()
+
+for group in secretBoard:
+    for row in group:
+        print(*row)
+
+for group in publicBoard:
+    for row in group:
+        print(*row)
+
+publicBoard = getPublicBoard()
+
+for group in publicBoard:
+    for row in group:
+        print(*row)
+
+
+
+
+
+
+
+
