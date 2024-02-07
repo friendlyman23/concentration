@@ -2,6 +2,8 @@ import concentration_constants as CC
 import random
 import copy
 import time
+import sys
+import os
 
 # five lines per card
     #  -----  line 1
@@ -13,11 +15,22 @@ import time
 def welcomePlayer():
     
     concentration = 'CONCENTRATION'
+    print('Welcome to')
     for letter in concentration:
         print(letter, end=' ')
         # time.sleep(.5)
     print()
-    print('There are %s cards on the board. Try to find all the matches in five tries.' % CC.CARD_TOTAL)
+    confidence = ''
+    while confidence not in '1 2 3'.split():
+        print('There are %s cards on the board. How confident do you feel?' % CC.CARD_TOTAL)
+        print('1 - Very\n2 - Sorta\n3 - Help me\n4 - quit')
+        confidence = input()
+        if confidence == 'quit':
+            sys.exit()
+    int(confidence)
+
+    return confidence
+
     # input('(Press RETURN to see the board.)')
     # sleep(.75)
 
@@ -129,8 +142,11 @@ def playerTurn(cards, isFlipped):
     playerChoice0 = 0
 
     while playerChoice0 not in range(1, CC.CARD_TOTAL + 1):
-        print('Which card would you like to flip?')
-        playerChoice0 = int(input())
+        print('Which card would you like to flip? Or enter "q" to quit.')
+        playerChoice0 = input()
+        if playerChoice0 == 'q':
+            sys.exit()
+        playerChoice0 = int(playerChoice0)
 
     flipCard(playerChoice0, isFlipped)
     printBoard(cards, isFlipped)
@@ -138,8 +154,11 @@ def playerTurn(cards, isFlipped):
     playerChoice1 = 0
 
     while playerChoice1 not in range(1, CC.CARD_TOTAL + 1):
-        print('Choose one more card to flip.')
-        playerChoice1 = int(input())
+        print('Choose one more card to flip. Or enter "q" to quit.')
+        playerChoice1 = input()
+        if playerChoice0 == 'q':
+            sys.exit()
+        playerChoice1 = int(playerChoice1)
 
     flipCard(playerChoice1, isFlipped)
     printBoard(cards, isFlipped)
@@ -162,9 +181,10 @@ def playerTurn(cards, isFlipped):
 
 while True:
 
-    welcomePlayer()
+    confidence = welcomePlayer()
 
-    # get card fronts and backs
+    # get card
+    #fronts and backs
     cardBacks = getCardBacks()
     cardFronts = getCardFronts()
 
@@ -178,8 +198,15 @@ while True:
 
 
 
-
-    turns = 10
+    if confidence == str(1):
+        turns = 10
+        print('10 TURNS IT IS THEN!!!\n(Press return to continue.)\n')
+    elif confidence == str(2):
+        turns = 15
+        print('Try to find all the matches in 15 turns.\n(Press return to continue.)\n')
+    else:
+        turns = 100
+        print('OK you\'ll have 100 turns but try to have a better opinion of yourself.\n(Press return to continue.)\n')
     matches = 0
 
     while turns > 0:
@@ -221,8 +248,12 @@ while True:
             turns -= 1
             isFlipped = setFlippedList()
 
-    print('The game is over.')
-    input('Press return to continue.')
+
+        if turns == 0:
+            print('No turns remaining. Try again?')
+
+        os.system('clear')
+            
 
 
     
