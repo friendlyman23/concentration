@@ -155,7 +155,6 @@ print('Welcome to Memory Match!')
 theCards = getCards(CARD_ART)
 turns = getNumTurns()
 cardsRemaining = 12
-
 while turns > 0:
     
     printBoard(theCards, turns)
@@ -169,7 +168,7 @@ while turns > 0:
         turns -= 1
     
     if isFutile(cardsRemaining, turns):
-        print(f'You are about to begin turn {turns}, but there are {int(cardsRemaining / 2)} more matches to make, so it is no longer possible for you to win. If you would like to quit now, please type "quit." To continue anyway, press enter.')
+        print(f'There are {int(cardsRemaining / 2)} more matches to make, but only {turns} turns remaining, so it is no longer possible for you to win. If you would like to quit now, please type "quit." To continue anyway, press enter.')
         if input() == 'quit':
             sys.exit()
 
